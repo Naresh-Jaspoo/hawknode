@@ -1,366 +1,1271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HawkNode Technologies</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HawkNode Technologies | Industrial Automation Solutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f9f9f9;
-      color: #000;
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --secondary: #f26522;
+      --dark: #0c2b3a;
+      --light: #f9fafb;
+      --gray: #6b7280;
+      --light-gray: #e5e7eb;
     }
-
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background-color: var(--light);
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: #d9531e;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .section-title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-padding {
+      padding: 100px 0;
+    }
+    
+    /* ===== Header ===== */
     header {
-      background: gray;
-      color: #fff;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+    
+    header.scrolled {
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 60px;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      padding: 20px 0;
     }
-
+    
     .logo {
-      font-size: 28px;
+      font-size: 1.8rem;
       font-weight: 700;
-      color: #fff;
-    }
-    .logo span { color: #f26522; }
-
-    nav ul {
-      list-style: none;
+      color: var(--dark);
       display: flex;
-      gap: 24px;
+      align-items: center;
     }
-    nav ul li { position: relative; }
-    nav ul li a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: 500;
-      padding: 10px 12px;
-      display: block;
-      transition: all 0.3s ease;
+    
+    .logo img {
+      height: 40px;
+      margin-right: 10px;
     }
-    nav ul li a:hover {
-      background: rgba(255,255,255,0.1);
-      border-radius: 5px;
+    
+    .logo span {
+      color: var(--primary);
     }
-    nav ul li:hover > ul { display: block; }
-    nav ul li ul {
-      display: none;
+    
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-item {
+      position: relative;
+    }
+    
+    .nav-link {
+      font-weight: 600;
+      padding: 0.5rem 0;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary);
+    }
+    
+    .nav-link i {
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+    }
+    
+    .submenu {
       position: absolute;
-      top: 110%;
+      top: 100%;
       left: 0;
-      background: #fff;
-      color: #000;
-      border-radius: 6px;
-      padding: 10px 0;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-      min-width: 180px;
-      z-index: 999;
+      background-color: white;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 1rem 0;
+      min-width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      z-index: 100;
     }
-    nav ul li ul li a {
-      color: #0c2b3a;
-      padding: 10px 20px;
+    
+    .nav-item:hover .submenu {
+      opacity: 1;
+      visibility: visible;
     }
-    nav ul li ul li a:hover { background: #f2f2f2; }
-
+    
+    .submenu li {
+      padding: 0.5rem 1.5rem;
+    }
+    
+    .submenu li:hover {
+      background-color: var(--light-gray);
+    }
+    
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+    
+    /* ===== Hero Section ===== */
     .hero {
-      background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20220314/pngtree-concept-of-businessman-workplace-touch-screen-office-desk-work-place-photo-image_3668787.jpg');
+      background: linear-gradient(rgba(12, 43, 58, 0.8), rgba(12, 43, 58, 0.8)), 
+                  url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
       background-size: cover;
       background-position: center;
       color: white;
       text-align: center;
-      height: 100vh;
+      padding: 180px 0 100px;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    /* ===== Solutions Section ===== */
+    .solutions {
+      background-color: white;
+    }
+    
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .solution-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .solution-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .solution-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .solution-img {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .solution-content {
+      padding: 1.5rem;
+    }
+    
+    .solution-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .solution-content p {
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+    }
+    
+    .solution-link {
+      color: var(--primary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    /* ===== Industries Section ===== */
+    .industries {
+      background-color: var(--light);
+    }
+    
+    .industry-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    
+    .industry-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .industry-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .industry-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .industry-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .industry-card h3 {
+      margin-bottom: 0.75rem;
+    }
+    
+    .industry-card p {
+      color: var(--gray);
+    }
+    
+    /* ===== Partners Section ===== */
+    .partners {
+      background-color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    .partner-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .partner-track {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      align-items: center;
+      animation: scroll 20s linear infinite;
+      width: calc(250px * 10);
+    }
+    
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-250px * 5));
+      }
+    }
+    
+    .partner-logo {
+      height: 60px;
+      filter: grayscale(100%);
+      opacity: 0.7;
+      transition: all 0.3s;
+      flex-shrink: 0;
+      width: 200px;
+      object-fit: contain;
+    }
+    
+    .partner-logo:hover {
+      filter: grayscale(0);
+      opacity: 1;
+      animation-play-state: paused;
+    }
+    
+    /* ===== About Section ===== */
+    .about {
+      background-color: var(--light);
+    }
+    
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    
+    .about-text h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .about-text.visible h2 {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .about-text p {
+      margin-bottom: 1.5rem;
+      color: var(--gray);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease 0.2s;
+    }
+    
+    .about-text.visible p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .stat-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .stat-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    .about-image {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .about-image.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .about-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* ===== Contact Section ===== */
+    .contact {
+      background-color: white;
+    }
+    
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    
+    .contact-info {
+      display: grid;
+      gap: 1.5rem;
+    }
+    
+    .contact-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: var(--light);
+      border-radius: 10px;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .contact-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .contact-icon {
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .contact-details h3 {
+      margin-bottom: 0.5rem;
+    }
+    
+    .contact-details p, .contact-details a {
+      color: var(--gray);
+      transition: color 0.3s;
+    }
+    
+    .contact-details a:hover {
+      color: var(--primary);
+    }
+    
+    .contact-form {
+      background: var(--light);
+      padding: 2rem;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    
+    .contact-form.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--light-gray);
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    /* ===== Footer ===== */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 60px 0 30px;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-logo span {
+      color: var(--primary);
+    }
+    
+    .footer-about p {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1.5rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .social-links a {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-    }
-    .hero-content {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 40px;
-      border-radius: 10px;
-    }
-    .hero-content h1 {
-      font-size: 48px;
-      margin-bottom: 20px;
-    }
-    .hero-content p {
-      font-size: 20px;
-      max-width: 800px;
-      margin: auto;
-      margin-bottom: 30px;
-    }
-    .cta a {
-      padding: 14px 28px;
-      background: #f26522;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
       color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
+      transition: all 0.3s;
     }
-
-    section {
-      padding: 60px 20px;
-      margin: 0 auto;
+    
+    .social-links a:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
     }
-
-    .section-title {
-      font-size: 32px;
-      margin-bottom: 30px;
-      text-align: center;
-      color: #fff;
-    }
-
-    .services-grid, .industry-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      justify-content: center;
-    }
-
-    .card {
-      background-size: cover;
-      background-position: center;
-      color: white;
-      padding: 24px;
-      border-radius: 8px;
-      flex: 1 1 280px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
-      min-height: 220px;
+    
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
       position: relative;
-      overflow: hidden;
     }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 0;
+    
+    .footer-links ul li {
+      margin-bottom: 0.75rem;
     }
-
-    .card > * {
-      position: relative;
-      z-index: 1;
+    
+    .footer-links ul li a {
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.3s;
     }
-
-    .card:hover {
-      transform: translateY(-4px);
-    }
-
-    .card h3, .card p {
-      color: #fff;
-    }
-
-    .product-logos {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    .product-logos a img {
-      height: 60px;
-      background-color: white;
-      padding: 8px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    form {
-      background: white;
-      padding: 24px;
-      border-radius: 8px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    form input, form textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-    form button {
-      background: #f26522;
+    
+    .footer-links ul li a:hover {
       color: white;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
     }
-    form button:hover {
-      background: #d9531e;
-    }
-
-    footer {
-      background-image: url('https://tse1.mm.bing.net/th/id/OIP.4JxBCim-TzhniQNjsLDawQHaB7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');
-      background-size: cover;
-      background-position: center;
-      color: white;
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 30px;
       text-align: center;
-      padding: 40px 20px;
-      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
     }
-
-    .section-bg {
-      background-size: cover;
-      background-position: center;
-      color: #fff;
+    
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 992px) {
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      
+      .about-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .about-image {
+        order: -1;
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+      
+      .nav-menu {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        flex-direction: column;
+        background-color: white;
+        width: 100%;
+        padding: 2rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        transition: left 0.3s;
+      }
+      
+      .nav-menu.active {
+        left: 0;
+      }
+      
+      .nav-item {
+        margin-bottom: 1rem;
+      }
+      
+      .submenu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        box-shadow: none;
+        padding: 0;
+        margin-top: 0.5rem;
+        margin-left: 1rem;
+        display: none;
+      }
+      
+      .nav-item.active .submenu {
+        display: block;
+      }
+      
+      .hero {
+        padding: 150px 0 80px;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+      }
+      
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .partner-track {
+        animation: scroll-mobile 20s linear infinite;
+      }
+      
+      @keyframes scroll-mobile {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(-150px * 5));
+        }
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .section-padding {
+        padding: 60px 0;
+      }
+      
+      .solution-card {
+        min-height: auto;
+      }
+      
+      .industry-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Hawk<span> Node</span></div>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li>
-          <a href="#services">Solutions</a>
+  <!-- Header -->
+  <header id="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <!-- Replace with your logo image -->
+          <img src="https://via.placeholder.com/40x40" alt="HawkNode Logo">
+          <span>HawkNode</span>
+        </a>
+        <div class="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="#" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#solutions" class="nav-link">Solutions <i class="fas fa-chevron-down"></i></a>
+            <ul class="submenu">
+              <li><a href="#solutions">SCADA Development</a></li>
+              <li><a href="#solutions">Industrial IoT</a></li>
+              <li><a href="#solutions">MES Systems</a></li>
+              <li><a href="#solutions">Energy Monitoring</a></li>
+              <li><a href="#solutions">Utilities Automation</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#industries" class="nav-link">Industries <i class="fas fa-chevron-down"></i></a>
+            <ul class="submenu">
+              <li><a href="#industries">Manufacturing</a></li>
+              <li><a href="#industries">Automotive</a></li>
+              <li><a href="#industries">Power & Energy</a></li>
+              <li><a href="#industries">Food & Beverage</a></li>
+              <li><a href="#industries">Water Treatment</a></li>
+              <li><a href="#industries">Smart Buildings</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#partners" class="nav-link">Partners <i class="fas fa-chevron-down"></i></a>
+            <ul class="submenu">
+              <li><a href="#partners">Siemens</a></li>
+              <li><a href="#partners">Ignition</a></li>
+              <li><a href="#partners">ThingWorx</a></li>
+              <li><a href="#partners">Node-RED</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#contact" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Smarter Automation. Sharper Insight.</h1>
+        <p>Empowering industries with connected SCADA, IIoT and intelligent MES solutions — engineered for performance and reliability.</p>
+        <div class="hero-buttons">
+          <a href="#solutions" class="btn">Explore Solutions</a>
+          <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions Section -->
+  <section id="solutions" class="section-padding solutions">
+    <div class="container">
+      <h2 class="section-title">Our Industrial Solutions</h2>
+      <p class="text-center" style="max-width: 700px; margin: 0 auto 3rem; color: var(--gray);">
+        Cutting-edge automation solutions designed to optimize your operations and drive efficiency across your enterprise.
+      </p>
+      
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <div class="solution-img" style="background-image: url('https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+          <div class="solution-content">
+            <h3>SCADA Development</h3>
+            <p>Ignition, FactoryTalk, WinCC, AVEVA — scalable, secure, and responsive systems tailored to your needs.</p>
+            <a href="https://www.inductiveautomation.com/scada-software" target="_blank" class="solution-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <div class="solution-card">
+          <div class="solution-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+          <div class="solution-content">
+            <h3>Industrial IoT</h3>
+            <p>Real-time MQTT, REST API integrations, edge-to-cloud visibility with predictive analytics.</p>
+            <a href="https://www.ptc.com/en/products/iot" target="_blank" class="solution-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <div class="solution-card">
+          <div class="solution-img" style="background-image: url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+          <div class="solution-content">
+            <h3>MES Systems</h3>
+            <p>OEE, downtime analysis, traceability, quality management — digitally connected factories.</p>
+            <a href="https://www.siemens.com/global/en/products/automation/industry-software/mes-manufacturing-execution-system.html" target="_blank" class="solution-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <div class="solution-card">
+          <div class="solution-img" style="background-image: url('https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80');"></div>
+          <div class="solution-content">
+            <h3>Energy Monitoring</h3>
+            <p>Track and optimize energy usage across facilities with real-time dashboards and automated reports.</p>
+            <a href="https://www.siemens.com/global/en/products/energy/services/energy-management-solutions.html" target="_blank" class="solution-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <div class="solution-card">
+          <div class="solution-img" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+          <div class="solution-content">
+            <h3>Utilities Automation</h3>
+            <p>Comprehensive monitoring and control for water, HVAC, lighting in smart buildings and utilities.</p>
+            <a href="https://www.siemens.com/global/en/products/buildings/automation.html" target="_blank" class="solution-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <div class="solution-card">
+          <div class="solution-img" style="background-image: url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');"></div>
+          <div class="solution-content">
+            <h3>Custom Solutions</h3>
+            <p>Tailored automation systems designed specifically for your unique operational requirements.</p>
+            <a href="#contact" class="solution-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industries Section -->
+  <section id="industries" class="section-padding industries">
+    <div class="container">
+      <h2 class="section-title">Industries We Serve</h2>
+      <p class="text-center" style="max-width: 700px; margin: 0 auto 3rem; color: var(--gray);">
+        We deliver specialized automation solutions across diverse industrial sectors.
+      </p>
+      
+      <div class="industry-cards">
+        <div class="industry-card">
+          <div class="industry-icon">
+            <i class="fas fa-industry"></i>
+          </div>
+          <h3>Manufacturing</h3>
+          <p>Automate and monitor production lines with complete traceability and performance metrics.</p>
+        </div>
+        
+        <div class="industry-card">
+          <div class="industry-icon">
+            <i class="fas fa-car"></i>
+          </div>
+          <h3>Automotive</h3>
+          <p>Integrate shop floor data to improve quality, reduce downtime, and increase throughput.</p>
+        </div>
+        
+        <div class="industry-card">
+          <div class="industry-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Power & Energy</h3>
+          <p>Monitor solar, wind, and utility grids with live data, alarms, and reporting.</p>
+        </div>
+        
+        <div class="industry-card">
+          <div class="industry-icon">
+            <i class="fas fa-utensils"></i>
+          </div>
+          <h3>Food & Beverage</h3>
+          <p>Ensure regulatory compliance, batch tracking, and high production efficiency.</p>
+        </div>
+        
+        <div class="industry-card">
+          <div class="industry-icon">
+            <i class="fas fa-tint"></i>
+          </div>
+          <h3>Water Treatment</h3>
+          <p>Control and monitor flow, pressure, level, and chemical dosing in real-time.</p>
+        </div>
+        
+        <div class="industry-card">
+          <div class="industry-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <h3>Smart Buildings</h3>
+          <p>Automate lighting, HVAC, energy meters, and security systems efficiently.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section-padding about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <h2>Why Choose HawkNode?</h2>
+          <p>With over 15 years of experience in industrial automation, we bring deep domain expertise and technical excellence to every project. Our team of certified engineers delivers solutions that drive measurable business results.</p>
+          <p>We combine cutting-edge technology with practical industry knowledge to create systems that are both powerful and easy to use. Our focus is always on delivering real value to our clients.</p>
+          
+          <div class="about-stats">
+            <div class="stat-item">
+              <div class="stat-number">15+</div>
+              <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">200+</div>
+              <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">95%</div>
+              <div class="stat-label">Client Retention</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">24/7</div>
+              <div class="stat-label">Support Available</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="about-image">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Our Team">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section id="partners" class="section-padding partners">
+    <div class="container">
+      <h2 class="section-title">Our Technology Partners</h2>
+      <p class="text-center" style="max-width: 700px; margin: 0 auto 3rem; color: var(--gray);">
+        We work with leading technology providers to deliver best-in-class solutions.
+      </p>
+      
+      <div class="partner-container">
+        <div class="partner-track">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Siemens_Logo_2017.png/800px-Siemens_Logo_2017.png" alt="Siemens" class="partner-logo">
+          <img src="https://inductiveuniversity.com/static/images/Logo-IA.svg" alt="Ignition" class="partner-logo">
+          <img src="https://www.ptc.com/content/dam/ptc-com/images/brand-guidelines/ptc-logo-2color.png" alt="ThingWorx" class="partner-logo">
+          <img src="https://nodered.org/about/resources/media/node-red-icon.png" alt="Node-RED" class="partner-logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Rockwell_Automation_logo.svg/1200px-Rockwell_Automation_logo.svg.png" alt="Rockwell Automation" class="partner-logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Siemens_Logo_2017.png/800px-Siemens_Logo_2017.png" alt="Siemens" class="partner-logo">
+          <img src="https://inductiveuniversity.com/static/images/Logo-IA.svg" alt="Ignition" class="partner-logo">
+          <img src="https://www.ptc.com/content/dam/ptc-com/images/brand-guidelines/ptc-logo-2color.png" alt="ThingWorx" class="partner-logo">
+          <img src="https://nodered.org/about/resources/media/node-red-icon.png" alt="Node-RED" class="partner-logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Rockwell_Automation_logo.svg/1200px-Rockwell_Automation_logo.svg.png" alt="Rockwell Automation" class="partner-logo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section-padding contact">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="text-center" style="max-width: 700px; margin: 0 auto 3rem; color: var(--gray);">
+        Have questions or ready to start your automation journey? Contact us today.
+      </p>
+      
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Email Us</h3>
+              <a href="mailto:test@hawknode.in">test@hawknode.in</a>
+            </div>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Call Us</h3>
+              <a href="tel:+11234567890">+1 (123) 456-7890</a>
+            </div>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fab fa-linkedin"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Connect</h3>
+              <a href="https://linkedin.com/company/hawknode" target="_blank">LinkedIn Profile</a>
+            </div>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Visit Us</h3>
+              <p>123 Business Street, Tech City, IN 560001</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="contact-form">
+          <form id="contactForm" action="https://formspree.io/f/mdoqnpae" method="POST">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Your Email</label>
+              <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <span>HawkNode</span>
+          </div>
+          <p>Leading provider of industrial automation solutions with a focus on innovation, reliability, and customer success.</p>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Solutions</h3>
           <ul>
-            <li><a href="#services">SCADA</a></li>
-            <li><a href="#services">IIoT</a></li>
-            <li><a href="#services">MES</a></li>
-            <li><a href="#services">Energy Monitoring</a></li>
-            <li><a href="#services">Utilities Automation</a></li>
+            <li><a href="#solutions">SCADA Systems</a></li>
+            <li><a href="#solutions">Industrial IoT</a></li>
+            <li><a href="#solutions">MES Solutions</a></li>
+            <li><a href="#solutions">Energy Monitoring</a></li>
+            <li><a href="#solutions">Utilities Automation</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="#industries">Industries</a>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Industries</h3>
           <ul>
             <li><a href="#industries">Manufacturing</a></li>
             <li><a href="#industries">Automotive</a></li>
             <li><a href="#industries">Power & Energy</a></li>
-            <li><a href="#industries">Smart Buildings</a></li>
+            <li><a href="#industries">Food & Beverage</a></li>
+            <li><a href="#industries">Water Treatment</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="#products">Products</a>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Company</h3>
           <ul>
-            <li><a href="#products">Siemens</a></li>
-            <li><a href="#products">Ignition</a></li>
-            <li><a href="#products">ThingWorx</a></li>
-            <li><a href="#products">Node-RED</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Team</a></li>
+            <li><a href="#">Case Studies</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="#contact">Contact</a>
-          <ul>
-            <li><a href="#contact">Email</a></li>
-            <li><a href="#demo">Request Demo</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Smarter Automation. Sharper Insight.</h1>
-      <p>Empowering industries with connected SCADA, IIoT and intelligent MES solutions — engineered for performance.</p>
-      <div class="cta">
-        <a href="#demo">Request a Demo</a>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 HawkNode Technologies. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
       </div>
     </div>
-  </section>
-
-  <section id="services" class="section-bg" style="background-image: url('https://images.unsplash.com/photo-1581090700227-1e8c337d799b');">
-    <h2 class="section-title">Our Solutions</h2>
-    <div class="services-grid">
-      <div class="card" style="background-image: url('https://wallpaperaccess.com/full/11107321.jpg');">
-        <h3>SCADA Development</h3>
-        <p>Ignition, FactoryTalk, WinCC, AVEVA — scalable, secure, and responsive.</p>
-      </div>
-      <div class="card" style="background-image: url('https://www.intigia.com/wp-content/uploads/2020/10/IOT-primera.png');">
-        <h3>Industrial IoT</h3>
-        <p>Real-time MQTT, REST API integrations, edge-to-cloud visibility.</p>
-      </div>
-      <div class="card" style="background-image: url('https://www.ordinal.fr/images/2022/07/22/usinefutur2022-sans-texte-1.jpg');">
-        <h3>MES Systems</h3>
-        <p>OEE, downtime, traceability, quality — digitally connected factories.</p>
-      </div>
-      <div class="card" style="background-image: url('https://tse2.explicit.bing.net/th/id/OIP.21F64D66P8udB8iVn53uEwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');">
-        <h3>Energy Monitoring</h3>
-        <p>Track and optimize energy usage using real-time dashboards and reports.</p>
-      </div>
-      <div class="card" style="background-image: url('https://www.cybertrol.com/hubfs/Industry-Featured-Image_Energy-and-Utilities_1200x600.jpg');">
-        <h3>Utilities Automation</h3>
-        <p>Monitor and control water, HVAC, lighting, and more for smart buildings and utilities.</p>
-      </div>
-    </div>
-  </section>
-
-<style>
-  /* Padding inside each section */
-  section {
-    padding: 40px 20px;
-    margin-bottom: 40px; /* Gap between sections */
-  }
-
-  /* Change header color to black */
-  .section-title {
-    color: black !important;
-  }
-</style>
-
-<section id="industries" class="section-bg" style="background-image: url('');">
-  <h2 class="section-title">Industries We Serve</h2>
-  <div class="industry-cards">
-    <div class="card" style="background-image: url('https://i.ytimg.com/vi/nmuGlM3fC84/maxresdefault.jpg');"><h3>Manufacturing</h3><p>Automate and monitor production lines with complete traceability and performance metrics.</p></div>
-    <div class="card" style="background-image: url('https://tse3.mm.bing.net/th/id/OIP.gjxoI9mxkmin8eJcnkSk9gHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');"><h3>Automotive</h3><p>Integrate shop floor data to improve quality, reduce downtime, and increase throughput.</p></div>
-    <div class="card" style="background-image: url('https://intexco.co/wp-content/uploads/2023/12/solution-media1.jpg');"><h3>Power & Energy</h3><p>Monitor solar, wind, and utility grids with live data, alarms, and reporting.</p></div>
-    <div class="card" style="background-image: url('https://www.beamex.com/wp-content/uploads/2016/06/Food-and-Beverage-industry-v5-1024x683.jpg');"><h3>Food & Beverage</h3><p>Ensure regulatory compliance, batch tracking, and high production efficiency.</p></div>
-    <div class="card" style="background-image: url('https://media.sketchfab.com/models/0155904cbf7e4ae3a2f874a87963fcba/thumbnails/f36b92eed7434e0688addf06ade06d27/db438c52d5ae4e86b827b17839562cdd.jpeg');"><h3>Water Treatment</h3><p>Control and monitor flow, pressure, level, and chemical dosing in real-time.</p></div>
-    <div class="card" style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be');"><h3>Smart Buildings</h3><p>Automate lighting, HVAC, energy meters, and security systems efficiently.</p></div>
-  </div>
-</section>
-
-<section id="products" class="section-bg" style="background-image: url('');">
-  <h2 class="section-title">Our Technology Partners</h2>
-  <div class="product-logos">
-    <a href="https://www.siemens.com" target="_blank"><img src="https://tse4.mm.bing.net/th/id/OIP.tDgDjHXKhksRrV9ydihmJwHaDK" alt="Siemens"></a>
-    <a href="https://inductiveautomation.com" target="_blank"><img src="https://tse1.mm.bing.net/th/id/OIP.tXCYzwD1hSVpG1frN1t9tQHaCF" alt="Inductive Automation"></a>
-    <a href="https://www.ptc.com/en/products/thingworx" target="_blank"><img src="https://tse2.mm.bing.net/th/id/OIP.Tgcsy3zEziWolU0M0gIyawHaBj" alt="ThingWorx"></a>
-    <a href="https://nodered.org" target="_blank"><img src="https://nodered.org/about/resources/media/node-red-icon.svg" alt="Node-RED"></a>
-  </div>
-</section>
-
-<section id="contact" style="background-image: url('https://www.yasingelatin.com/wp-content/uploads/2023/01/contact-us1.jpg'); background-size: cover; background-position: center; color: white;">
-  <h2 class="section-title" style="color: black;">Contact Us</h2>
-  <form action="https://formsubmit.co/nareshroyal7777@gmail.com" method="POST">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_template" value="table">
-    <input type="text" name="name" placeholder="Your Name" required>
-    <input type="email" name="email" placeholder="Your Email" required>
-    <textarea name="message" placeholder="Your Message" rows="4"></textarea>
-    <button type="submit">Send Message</button>
-  </form>
-</section>
-
-<section id="demo" style="background-image: url('https://tse3.mm.bing.net/th/id/OIP.9xuZ3h8fDXLxh9VVGyYm7gHaE8?r=0&w=2560&h=1709&rs=1&pid=ImgDetMain&o=7&rm=3'); background-size: cover; background-position: center; color: white;">
-  <h2 class="section-title">Request a Demo</h2>
-  <form action="https://formsubmit.co/nareshroyal7777@gmail.com" method="POST" style="background: rgba(255,255,255,0.95); color: #000;">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="text" name="name" placeholder="Your Name" required>
-    <input type="email" name="email" placeholder="Your Email" required>
-    <input type="text" name="company" placeholder="Company (optional)">
-    <textarea name="demo_details" placeholder="What would you like to see in demo?" rows="4"></textarea>
-    <button type="submit">Request Demo</button>
-  </form>
-</section>
-  <footer>
-    &copy; 2025 HawkNode Technologies | All Rights Reserved
   </footer>
+
+  <script>
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+    
+    // Toggle submenus on mobile
+    navItems.forEach(item => {
+      if (item.querySelector('.submenu')) {
+        const link = item.querySelector('.nav-link');
+        
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            item.classList.toggle('active');
+          }
+        });
+      }
+    });
+    
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      if (!link.parentElement.querySelector('.submenu')) {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+          }
+        });
+      }
+    });
+    
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Scroll animation
+    function checkScroll() {
+      const elements = document.querySelectorAll('.section-title, .solution-card, .industry-card, .about-text h2, .about-text p, .stat-item, .about-image, .contact-card, .contact-form');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementPosition < windowHeight - 100) {
+          element.classList.add('visible');
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', checkScroll);
+    window.addEventListener('load', checkScroll);
+    
+    // Form submission
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(form);
+      
+      // Send form data using Fetch API
+      fetch('https://formspree.io/f/mdoqnpae', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Thank you for your message! We will get back to you soon.');
+          form.reset();
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch(error => {
+        alert('There was a problem sending your message. Please try again later.');
+        console.error('Error:', error);
+      });
+    });
+    
+    // Window resize handler
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+        navItems.forEach(item => {
+          item.classList.remove('active');
+        });
+      }
+    });
+  </script>
 </body>
 </html>
