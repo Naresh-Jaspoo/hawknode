@@ -186,6 +186,7 @@
     .nav-menu {
       display: flex;
       gap: 2.5rem;
+      list-style: none;
     }
     
     .nav-item {
@@ -194,31 +195,17 @@
     
     .nav-link {
       font-weight: 600;
-      padding: 0.5rem 0;
-      transition: color 0.3s;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      position: relative;
-    }
-    
-    .nav-link:after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--gradient-1);
-      transition: width 0.3s ease;
+      border-radius: 8px;
     }
     
     .nav-link:hover {
+      background-color: rgba(37, 99, 235, 0.1);
       color: var(--primary);
-    }
-    
-    .nav-link:hover:after {
-      width: 100%;
     }
     
     .nav-link i {
@@ -240,6 +227,7 @@
       transform: translateY(10px);
       transition: all 0.3s ease;
       z-index: 100;
+      list-style: none;
     }
     
     .nav-item:hover .submenu {
@@ -260,9 +248,33 @@
     
     .hamburger {
       display: none;
+      flex-direction: column;
       cursor: pointer;
-      font-size: 1.5rem;
-      color: var(--dark);
+      width: 30px;
+      height: 30px;
+      justify-content: space-between;
+      z-index: 1001;
+    }
+    
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: var(--dark);
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+    
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
     }
     
     /* ===== Hero Section ===== */
@@ -801,15 +813,19 @@
     
     .contact-container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 4rem;
       margin-top: 3.5rem;
       position: relative;
       z-index: 1;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
     
     .contact-info {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
     }
     
@@ -887,53 +903,6 @@
     
     .contact-details a:hover {
       color: var(--primary);
-    }
-    
-    .contact-form {
-      background: var(--light);
-      padding: 2.5rem;
-      border-radius: 16px;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    }
-    
-    .contact-form.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .form-group {
-      margin-bottom: 1.8rem;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 0.6rem;
-      font-weight: 600;
-      color: var(--dark);
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid var(--light-gray);
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      background-color: white;
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    
-    textarea.form-control {
-      min-height: 160px;
-      resize: vertical;
     }
     
     /* ===== Footer ===== */
@@ -1022,6 +991,10 @@
       height: 3px;
       background: var(--primary);
       border-radius: 2px;
+    }
+    
+    .footer-links ul {
+      list-style: none;
     }
     
     .footer-links ul li {
@@ -1318,20 +1291,23 @@
     
     @media (max-width: 768px) {
       .hamburger {
-        display: block;
+        display: flex;
       }
       
       .nav-menu {
         position: fixed;
-        top: 80px;
+        top: 0;
         left: -100%;
-        flex-direction: column;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
         background-color: white;
-        width: 100%;
-        padding: 2rem;
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        transition: left 0.3s;
+        flex-direction: column;
+        padding: 80px 20px 20px;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: left 0.3s ease;
         z-index: 999;
+        overflow-y: auto;
       }
       
       .nav-menu.active {
@@ -1339,7 +1315,13 @@
       }
       
       .nav-item {
-        margin-bottom: 1.2rem;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      .nav-link {
+        padding: 12px 15px;
+        border-radius: 8px;
         width: 100%;
       }
       
@@ -1349,11 +1331,12 @@
         visibility: visible;
         box-shadow: none;
         padding: 0;
-        margin-top: 0.5rem;
-        margin-left: 1rem;
+        margin-top: 5px;
+        margin-left: 15px;
         display: none;
         background: var(--light);
         border-radius: 8px;
+        width: calc(100% - 15px);
       }
       
       .nav-item.active .submenu {
@@ -1377,9 +1360,8 @@
         align-items: center;
       }
       
-      .contact-container {
+      .contact-info {
         grid-template-columns: 1fr;
-        gap: 3rem;
       }
       
       .partner-track {
@@ -1447,13 +1429,15 @@
       <nav class="navbar">
         <a href="#" class="logo">
           <!-- Replace with your logo image -->
-          <img src="Logo.jpg">
+          <img src="HawkNodeRedLogo.PNG">
           <span></span>
         </a>
-        <div class="hamburger">
-          <i class="fas fa-bars"></i>
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
-        <ul class="nav-menu">
+        <ul class="nav-menu" id="navMenu">
           <li class="nav-item">
             <a href="#" class="nav-link">Home</a>
           </li>
@@ -1773,28 +1757,6 @@
             </div>
           </div>
         </div>
-        
-        <div class="contact-form">
-          <form id="contactForm">
-            <div class="form-group">
-              <label for="name">Your Name</label>
-              <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Your Email</label>
-              <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label for="subject">Subject</label>
-              <input type="text" id="subject" name="subject" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" class="form-control" required></textarea>
-            </div>
-            <button type="button" class="btn" onclick="alert('Thank you for your interest! For now, please contact us via email or phone.');">Contact Us</button>
-          </form>
-        </div>
       </div>
     </div>
   </section>
@@ -1882,8 +1844,8 @@
 
   <script>
     // Mobile menu toggle
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
     const navItems = document.querySelectorAll('.nav-item');
     
     hamburger.addEventListener('click', () => {
@@ -1929,7 +1891,7 @@
     
     // Scroll animation
     function checkScroll() {
-      const elements = document.querySelectorAll('.section-title, .solution-card, .industry-card, .about-text h2, .about-text p, .stat-item, .about-image, .contact-card, .contact-form');
+      const elements = document.querySelectorAll('.section-title, .solution-card, .industry-card, .about-text h2, .about-text p, .stat-item, .about-image, .contact-card');
       
       elements.forEach(element => {
         const elementPosition = element.getBoundingClientRect().top;
@@ -2042,5 +2004,3 @@
   </script>
 </body>
 </html>
-
-
